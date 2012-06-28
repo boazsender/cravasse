@@ -1,13 +1,16 @@
 body {
+  font-family: sans-serif;
   padding: 0;
   margin: 0;
   text-align: center;
   background-color:#BADF9F;
  }
 #world {
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
   width: 480px;
   height: 640px;
+  clear: both;
+  display: block;
   background:
     -webkit-radial-gradient(black 15%, transparent 16%) 0 0,
     -webkit-radial-gradient(black 15%, transparent 16%) 8px 8px,
