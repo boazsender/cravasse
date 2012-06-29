@@ -6,9 +6,8 @@ $(function(){
   };
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
-    gravity: 30,
+    gravity: 40,
     scale: 30
-      
   });
 
   world.camera({x: 0, y: -7});
@@ -23,6 +22,7 @@ $(function(){
       color: 'black',
       shape: 'square',
       restitution: 0,
+      density: .5,
       x: x,
       y: y,
       width: w,
@@ -35,17 +35,17 @@ $(function(){
     });
   };
     
-  terrainSpawner(0, 0, .3, 430, 'leftwall');
-  terrainSpawner(16, 0, .3, 430, 'rightwall');
+  terrainSpawner(0, -200, .3, 430, 'leftwall');
+  terrainSpawner(16, -200, .3, 430, 'rightwall');
   terrainSpawner(0, 14, 32, 2, 'floor');
   
-  terrainSpawner(6, 1, 9, 3, 'floor', 'pink', false, 'img/cloud2.gif');
+  terrainSpawner(6, 1, 9, 3, 'floor', 'pink', false, 'img/cloud2.png');
   
   for(var i = 1; i < 100; i++){ 
-    terrainSpawner(2,  -Math.abs(i*11), 6, 3, 'floor', 'pink', false, 'img/cloud.gif');
-    terrainSpawner(8, -Math.abs(i*31), 9, 3, 'floor', 'pink', false, 'img/cloud2.gif');
-    terrainSpawner(8,  -Math.abs(i*43), 6, 3, 'floor', 'pink', false, 'img/cloud.gif');
-    terrainSpawner(5,  -Math.abs(i*53), 9, 3, 'floor', 'pink', false, 'img/cloud2.gif');
+    terrainSpawner(2,  -Math.abs(i*11), 6, 3, 'floor', 'pink', false, 'img/cloud1.png');
+    terrainSpawner(8, -Math.abs(i*31), 9, 3, 'floor', 'pink', false, 'img/cloud2.png');
+    terrainSpawner(8,  -Math.abs(i*43), 6, 3, 'floor', 'pink', false, 'img/cloud3.png');
+    terrainSpawner(5,  -Math.abs(i*53), 9, 3, 'floor', 'pink', false, 'img/cloud4.png');
   }
   
   
@@ -63,9 +63,12 @@ $(function(){
     color: 'black',
     x: 4,
     y: 1,
-    density: 0,
+    width: 2,
+    height: 2,
+    imageStretchToFit: true,
     fixedRotation: true,
-    friction: 2,
+    friction: 12,
+    density: 1,
     restitution: 0,
     spriteSheet:true,
     image: 'img/player.png',
@@ -76,28 +79,28 @@ $(function(){
   });
 
   player.onKeydown(function( e ){
-    var movementForce = 13;
-    var impulseForce = 18;
-
+    var force = 600;
+    
     // Right
     if (e.keyCode === 39) {
-      this.setForce( 'movement', movementForce, 1 * movementForce, 0);
+      this.setForce('movement', force, 90);
       inputState.right = true;
+      player.lastDirection = 'right';
     }
 
     // Left
     if (e.keyCode === 37) {
-      this.setForce( 'movement', movementForce, -1 * movementForce, 0);
+      this.setForce('movement', force, 270);
       inputState.left = true;
+      player.lastDirection = 'left';
     }
       
-
     // Jump
     if( this.contact && this.jumps < 2 ) {
 
       if (e.keyCode === 32 || 38) {
         this.jumps++
-        this.applyImpulse( impulseForce, 0);
+        this.applyImpulse( 50 );
         inputState.up = true;
       }
     }
@@ -105,6 +108,11 @@ $(function(){
 
   player.onKeyup(function( e ){
     player.clearForce( 'movement' );
+    if( player.lastDirection === 'right' ){
+      player.sprite( 0, 1 );
+    } else {
+      player.sprite( 0, 0 );
+    }
 
     // Right
     if (e.keyCode === 39) {
@@ -122,9 +130,26 @@ $(function(){
     }
   });
 
-
+  var frameCounter = 0
   player.onRender(function(){
-    // do sprite animations
+    frameCounter++
+    if( frameCounter > 6 ) {
+      frameCounter = 0;
+    }
+    if( inputState.left ) {
+      if(!this.contact){
+        player.sprite( 1, 0 )
+      } else {
+        player.sprite( frameCounter, 0 );
+      }
+    }
+    if( inputState.right ) {
+      if(!this.contact){
+        player.sprite( 1, 1 )
+      } else {
+        player.sprite( frameCounter, 1);
+      }
+    }
   });
 
 
@@ -151,5 +176,5 @@ $(function(){
     }
     
   });
-
+  window.player = player;
 });

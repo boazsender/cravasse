@@ -12,7 +12,8 @@ body {
   margin: 0 auto 10px auto;
   clear: both;
   display: block;
-  background: url('../img/clouds.png');
+  background: url('../img/bg.png');
+  border-bottom: 4px solid #000;
 /*
   background:
     -webkit-radial-gradient(black 15%, transparent 16%) 0 0,
@@ -20,7 +21,6 @@ body {
     -webkit-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
     -webkit-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
   background-color:pink;
-  border: 1px solid #000;
   background-size:16px 16px;
 */
 }
