@@ -56,21 +56,18 @@ $(function(){
     name: 'player',
     type: 'dynamic',
     color: 'black',
-    shape: 'square',
     x: 4,
-    y: -5,
-    width: .5,
-    height: .5,
+    y: 1,
     density: 0,
     fixedRotation: true,
     friction: 2,
     restitution: 0,
-    spriteSheet: 'img/player.png',
+    spriteSheet:true,
+    image: 'img/player.png',
     spriteWidth: 32,
     spriteHeight: 32,
-    spriteX: 0,
-    spriteY: 0
-    
+    spriteX: 32,
+    spriteY: 32
   });
   player.sprite( 0, 0 );
 
