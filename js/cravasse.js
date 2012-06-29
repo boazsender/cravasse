@@ -34,13 +34,13 @@ $(function(){
   terrainSpawner(16, 0, .3, 430, 'rightwall');
   terrainSpawner(0, 14, 32, 2, 'floor');
   
-  terrainSpawner(6, 1, 3, 1, 'floor', 'pink', false, 'img/cloud2.gif');
+  terrainSpawner(6, 1, 9, 3, 'floor', 'pink', false, 'img/cloud2.gif');
   
   for(var i = 1; i < 100; i++){ 
-    terrainSpawner(2,  -Math.abs(i*11), 1.5, 1, 'floor', 'pink', false, 'img/cloud.gif');
-    terrainSpawner(13, -Math.abs(i*17), 3, 1, 'floor', 'pink', false, 'img/cloud2.gif');
-    terrainSpawner(8,  -Math.abs(i*23), 1.5, 1, 'floor', 'pink', false, 'img/cloud.gif');
-    terrainSpawner(5,  -Math.abs(i*31), 3, 1, 'floor', 'pink', false, 'img/cloud2.gif');
+    terrainSpawner(2,  -Math.abs(i*11), 6, 3, 'floor', 'pink', false, 'img/cloud.gif');
+    terrainSpawner(8, -Math.abs(i*31), 9, 3, 'floor', 'pink', false, 'img/cloud2.gif');
+    terrainSpawner(8,  -Math.abs(i*43), 6, 3, 'floor', 'pink', false, 'img/cloud.gif');
+    terrainSpawner(5,  -Math.abs(i*53), 9, 3, 'floor', 'pink', false, 'img/cloud2.gif');
   }
   
   
@@ -64,9 +64,15 @@ $(function(){
     density: 0,
     fixedRotation: true,
     friction: 2,
-    restitution: 0
-      
+    restitution: 0,
+    spriteSheet: 'img/player.png',
+    spriteWidth: 32,
+    spriteHeight: 32,
+    spriteX: 0,
+    spriteY: 0
+    
   });
+  player.sprite( 0, 0 );
 
   player.onKeydown(function( e ){
     var movementForce = 13;
