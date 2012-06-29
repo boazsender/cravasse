@@ -8,7 +8,7 @@ $(function(){
 
   world.camera({x: 0, y: -7});
     
-  var terrainSpawner = function( x, y, w, h, name, color, active) {
+  var terrainSpawner = function( x, y, w, h, name, color, active, image) {
     if(active !== false) {
       var active = true
     }
@@ -24,13 +24,25 @@ $(function(){
       height: h,
       color: color || 'black',
       borderWidth: 0,
+      image: image || false,
+      imageStretchToFit: true,
       active: active
     });
   };
     
-  terrainSpawner(0, 0, .3, 130, 'leftwall');
-  terrainSpawner(16, 0, .3, 130, 'rightwall');
-  terrainSpawner(0, 14, 32, .5, 'floor');
+  terrainSpawner(0, 0, .3, 430, 'leftwall');
+  terrainSpawner(16, 0, .3, 430, 'rightwall');
+  terrainSpawner(0, 14, 32, 2, 'floor');
+  
+  terrainSpawner(6, 1, 3, 1, 'floor', 'pink', false, 'img/cloud2.gif');
+  
+  for(var i = 1; i < 100; i++){ 
+    terrainSpawner(2,  -Math.abs(i*11), 1.5, 1, 'floor', 'pink', false, 'img/cloud.gif');
+    terrainSpawner(13, -Math.abs(i*17), 3, 1, 'floor', 'pink', false, 'img/cloud2.gif');
+    terrainSpawner(8,  -Math.abs(i*23), 1.5, 1, 'floor', 'pink', false, 'img/cloud.gif');
+    terrainSpawner(5,  -Math.abs(i*31), 3, 1, 'floor', 'pink', false, 'img/cloud2.gif');
+  }
+  
   
   world.onRender(function(ctx) {
     var p = player.position();
@@ -57,8 +69,8 @@ $(function(){
   });
 
   player.onKeydown(function( e ){
-    var movementForce = 18;
-    var impulseForce = 13;
+    var movementForce = 13;
+    var impulseForce = 18;
     // Left
     if (e.keyCode === 39) {
       this.setForce( 'movement', movementForce, 1 * movementForce, 0);
@@ -87,7 +99,6 @@ $(function(){
   player.onStartContact(function( e ){
     this.contact = true;
     this.jumps = 0;
-
   });
 
   player.onFinishContact(function( e ){
@@ -104,8 +115,9 @@ $(function(){
     var p = player.position();
     var c = this.camera();
     if( p.y < 0 ) {
-      this.camera({x: 0, y: p.y - 7.4 });
+      this.camera({x: 0, y: p.y - 7 });
     }
+    
   });
 
 });
