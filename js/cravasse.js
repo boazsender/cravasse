@@ -1,14 +1,17 @@
 $(function(){
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
-    gravity: 20,
-    scale: 9,
+    gravity: 30,
+    scale: 30
       
   });
 
-  world.camera({x: -1.5, y: -10});
+  world.camera({x: 0, y: -7});
     
-  var terrainSpawner = function( x, y, w, h, name) {
+  var terrainSpawner = function( x, y, w, h, name, color, active) {
+    if(active !== false) {
+      var active = true
+    }
     var obstacle = world.createEntity({
       name: name || 'terrain-' + Math.random(),
       type: 'static',
@@ -19,13 +22,23 @@ $(function(){
       y: y,
       width: w,
       height: h,
-      color: 'black',
+      color: color || 'black',
+      borderWidth: 0,
+      active: active
     });
   };
     
-  terrainSpawner(2, 0, 1, 30, 'leftwall');
-  terrainSpawner(28, 0, 1, 30, 'rightwall');
-  terrainSpawner(14, 15, 50, 2, 'floor');
+  terrainSpawner(0, 0, .3, 130, 'leftwall');
+  terrainSpawner(16, 0, .3, 130, 'rightwall');
+  terrainSpawner(0, 14, 32, .5, 'floor');
+  
+  world.onRender(function(ctx) {
+    var p = player.position();
+    var c = this.camera();
+    if( p.y < -7 ) {
+      this.camera({x: 0, y: p.y - 7 });   
+    }
+  });
 
   var player = world.createEntity({
     name: 'player',
@@ -33,9 +46,9 @@ $(function(){
     color: 'black',
     shape: 'square',
     x: 4,
-    y: 2,
-    width: 1,
-    height: 1,
+    y: -5,
+    width: .5,
+    height: .5,
     density: 0,
     fixedRotation: true,
     friction: 2,
@@ -90,9 +103,9 @@ $(function(){
   world.onRender(function(ctx) {
     var p = player.position();
     var c = this.camera();
-    if( p.y < 4 ) {
-      this.camera({x: -1.5, y: player.position().y - 5});
+    if( p.y < 0 ) {
+      this.camera({x: 0, y: p.y - 7.4 });
     }
- });
+  });
 
 });

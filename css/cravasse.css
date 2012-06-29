@@ -4,11 +4,9 @@ body {
   margin: 0;
   text-align: center;
   background-color:#BADF9F;
- }
+}
 #world {
   margin: 0 auto 10px auto;
-  width: 480px;
-  height: 640px;
   clear: both;
   display: block;
   background:
