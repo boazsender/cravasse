@@ -1,4 +1,9 @@
 $(function(){
+  var inputState = {
+    left: false,
+    right: false,
+    up: false
+  };
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
     gravity: 30,
@@ -66,22 +71,24 @@ $(function(){
     image: 'img/player.png',
     spriteWidth: 32,
     spriteHeight: 32,
-    spriteX: 32,
-    spriteY: 32
+    spriteX: 0,
+    spriteY: 0
   });
-  player.sprite( 0, 0 );
 
   player.onKeydown(function( e ){
     var movementForce = 13;
     var impulseForce = 18;
-    // Left
-    if (e.keyCode === 39) {
-      this.setForce( 'movement', movementForce, 1 * movementForce, 0);
-    }
 
     // Right
+    if (e.keyCode === 39) {
+      this.setForce( 'movement', movementForce, 1 * movementForce, 0);
+      inputState.right = true;
+    }
+
+    // Left
     if (e.keyCode === 37) {
       this.setForce( 'movement', movementForce, -1 * movementForce, 0);
+      inputState.left = true;
     }
       
 
@@ -91,13 +98,35 @@ $(function(){
       if (e.keyCode === 32 || 38) {
         this.jumps++
         this.applyImpulse( impulseForce, 0);
+        inputState.up = true;
       }
     }
   });
 
   player.onKeyup(function( e ){
     player.clearForce( 'movement' );
+
+    // Right
+    if (e.keyCode === 39) {
+      inputState.right = false;
+    }
+
+    // Left
+    if (e.keyCode === 37) {
+      inputState.left = false;
+    }
+    
+    // Jump
+    if (e.keyCode === 32 || 38) {
+      inputState.up = false;
+    }
   });
+
+
+  player.onRender(function(){
+    // do sprite animations
+  });
+
 
   player.onStartContact(function( e ){
     this.contact = true;
