@@ -14,15 +14,14 @@ $(function(){
     
   var terrainSpawner = function( x, y, w, h, name, color, active, image) {
     if(active !== false) {
-      var active = true
+      active = true;
     }
     var obstacle = world.createEntity({
       name: name || 'terrain-' + Math.random(),
       type: 'static',
-      color: 'black',
       shape: 'square',
       restitution: 0,
-      density: .5,
+      density: 0.5,
       x: x,
       y: y,
       width: w,
@@ -35,8 +34,8 @@ $(function(){
     });
   };
     
-  terrainSpawner(0, -200, .3, 430, 'leftwall');
-  terrainSpawner(16, -200, .3, 430, 'rightwall');
+  terrainSpawner(0, -200, 0.3, 430, 'leftwall');
+  terrainSpawner(16, -200, 0.3, 430, 'rightwall');
   terrainSpawner(0, 14, 32, 2, 'floor');
   
   terrainSpawner(6, 1, 9, 3, 'floor', 'pink', false, 'img/cloud2.png');
@@ -100,7 +99,7 @@ $(function(){
     if( this.contact && this.jumps < 2 ) {
 
       if (e.keyCode === 32 || 38) {
-        this.jumps++
+        this.jumps++;
         this.applyImpulse( 50 );
         inputState.up = true;
       }
@@ -119,7 +118,7 @@ $(function(){
   });
 
   $("#jump").on('click', function(){
-    player.jumps++
+    player.jumps++;
     player.applyImpulse( 50 );
     inputState.up = true;
   });
@@ -154,22 +153,22 @@ $(function(){
     }
   });
 
-  var frameCounter = 0
+  var frameCounter = 0;
   player.onRender(function(){
-    frameCounter++
+    frameCounter++;
     if( frameCounter > 6 ) {
       frameCounter = 0;
     }
     if( inputState.left ) {
       if(!this.contact){
-        player.sprite( 1, 0 )
+        player.sprite( 1, 0 );
       } else {
         player.sprite( frameCounter, 0 );
       }
     }
     if( inputState.right ) {
       if(!this.contact){
-        player.sprite( 1, 1 )
+        player.sprite( 1, 1 );
       } else {
         player.sprite( frameCounter, 1);
       }
@@ -188,14 +187,14 @@ $(function(){
 
   player.onImpact(function( entity, force, friction ){
     if( force > 80 && entity._ops.type !== 'static' && entity.name !== 'obstacle'){
-      player.destroy()
+      player.destroy();
     }
-  })
+  });
 
   world.onRender(function(ctx) {
     var p = player.position();
     var c = this.camera();
-    if( p.y < .4 ) {
+    if( p.y < 0.4 ) {
       this.camera({x: 0, y: p.y - 7 });
     }
     
