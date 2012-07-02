@@ -12,8 +12,8 @@ $(function(){
   
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
-    // collisionOutlines: true,
-    gravity: 40,
+    collisionOutlines: true,
+    gravity: 60,
     scale: 30
   });
 
@@ -29,6 +29,7 @@ $(function(){
       shape: 'square',
       restitution: 0,
       density: 0.5,
+      friction: 1,
       x: x,
       y: y,
       width: w,
@@ -60,6 +61,9 @@ $(function(){
       name: 'player',
       type: 'dynamic',
       color: 'black',
+      friction: 1,
+      density: 0,
+      restitution: 0,
       x: 5,
       y: 7,
       width: 1.1,
@@ -70,10 +74,7 @@ $(function(){
       spriteSheet:true,
       spriteWidth: 96,
       spriteHeight: 96,
-      fixedRotation: true,
-      friction: 12,
-      density: 1,
-      restitution: 0
+      fixedRotation: true
     });
   
     player.kill = function( x, y ) {
@@ -118,14 +119,15 @@ $(function(){
       player.killed = true;
     };
 
-    var force = 400;
+    var force = 500;
 
     player.onKeydown(function( e ){
+      
       // Jump
       if( this.contact && this.jumps < 2 ) {
         if (e.keyCode === 38) {
           this.jumps++;
-          this.applyImpulse( 80 );
+          this.applyImpulse( 40 );
           inputState.up = true;
         }
       }
@@ -218,7 +220,7 @@ $(function(){
       }
     
       // Jump
-      if (e.keyCode === 96 || 38) {
+      if (e.keyCode === 38) {
         inputState.up = false;
       }
     });
@@ -276,12 +278,6 @@ $(function(){
       this.contact = false;
     });
 
-    player.onImpact(function( entity, force, friction ){
-      if( force > 80 && entity._ops.type !== 'static' && entity.name !== 'obstacle'){
-        player.destroy();
-      }
-    });
-    
     var lastPos = 0;
     window.world = world;
     window.player = player;
