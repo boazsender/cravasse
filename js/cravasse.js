@@ -130,7 +130,7 @@ $(function(){
     player.onKeydown(function( e ){
       // Jump
       if( this.contact && this.jumps < 2 ) {
-        if (e.keyCode === 96 || 38) {
+        if (e.keyCode === 38) {
           this.jumps++;
           this.applyImpulse( 80 );
           inputState.up = true;
@@ -149,6 +149,37 @@ $(function(){
         this.setForce('movement', force, 270);
         inputState.left = true;
         player.lastDirection = 'left';
+      }
+      
+      // Shoot
+      if (e.keyCode === 32) {
+        var bullet = world.createEntity({
+          name: 'bullet',
+          type: 'dynamic',
+          shape: 'square',
+          restitution: 0,
+          density: 0.5,
+          x: player.position().x,
+          y: player.position().y,
+          width: .1,
+          height: .1,
+          color: 'black'
+        });
+        
+        bullet.applyImpulse( 50 )
+        
+        bullet.onImpact( function( entity, normalForce, tangentialForce ){
+
+          if( entity.name().indexOf("dead-player") === 0 ){
+            
+            entity.destroy();
+            this.destroy();
+
+            entity._kinveyEntity.destroy()
+
+          }
+        });
+        
       }
     });
 
@@ -266,6 +297,7 @@ $(function(){
   var collection = new Kinvey.Collection('dead-bodies');
   collection.fetch({
     success: function(list) {
+      console.log(list)
       for (var i in list ){
         var deadPlayer = world.createEntity({
           name: 'dead-player-' + i,
@@ -282,7 +314,8 @@ $(function(){
           spriteWidth: 96,
           spriteHeight: 96
         });
-        deadPlayer.sprite(4, 2)
+        deadPlayer._kinveyEntity = list[i];
+        deadPlayer.sprite(4, 2);
       }
       kickoff();
     },
