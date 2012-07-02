@@ -75,7 +75,7 @@ $(function(){
     spriteWidth: 32,
     spriteHeight: 32,
     spriteX: 0,
-    spriteY: 0,
+    spriteY: 0
   });
   
   player.kill = function( x, y ) {
@@ -97,14 +97,15 @@ $(function(){
       spriteWidth: 32,
       spriteHeight: 32,
       spriteX: 0,
-      spriteY: 0,
-    })
+      spriteY: 0
+    });
     
     for(var i = 1; i < 5; i++){
-      deadPlayer.sprite(i, 2)
+      deadPlayer.sprite(i, 2);
     }
     this.destroy();
-  }
+  };
+
   var force = 600;
 
   player.onKeydown(function( e ){
