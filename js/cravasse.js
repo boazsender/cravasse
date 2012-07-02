@@ -120,9 +120,9 @@ $(function(){
     };
 
     var force = 500;
+    player.lastShot = Date.now();
 
     player.onKeydown(function( e ){
-      
       // Jump
       if( this.contact && this.jumps < 2 ) {
         if (e.keyCode === 38) {
@@ -148,33 +148,31 @@ $(function(){
       
       // Shoot
       if (e.keyCode === 32) {
-        var bullet = world.createEntity({
-          name: 'bullet',
-          type: 'dynamic',
-          shape: 'square',
-          restitution: 0,
-          density: 0.5,
-          x: player.position().x,
-          y: player.position().y,
-          width: 0.1,
-          height: 0.1,
-          color: 'black'
-        });
-        
-        bullet.applyImpulse( 50 );
-        
-        bullet.onImpact( function( entity, normalForce, tangentialForce ){
+        if( (player.lastShot + 1000) < Date.now() ){
+          player.lastShot = Date.now();
+          var bullet = world.createEntity({
+            name: 'bullet',
+            type: 'dynamic',
+            shape: 'square',
+            restitution: 0,
+            density: 0.5,
+            x: player.position().x,
+            y: player.position().y,
+            width: 0.1,
+            height: 0.1,
+            color: 'black'
+          });
 
-          if( entity.name().indexOf("dead-player") === 0 ){
-            
-            entity.destroy();
-            this.destroy();
+          bullet.applyImpulse( 50 );
 
-            entity._kinveyEntity.destroy();
-
-          }
-        });
-        
+          bullet.onImpact( function( entity, normalForce, tangentialForce ){
+            if( entity.name().indexOf("dead-player") === 0 ){
+              entity.destroy();
+              this.destroy();
+              entity._kinveyEntity.destroy();
+            }
+          });
+        }
       }
     });
 
