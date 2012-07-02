@@ -33,13 +33,14 @@ $(function(){
       active: active
     });
   };
-    
+  
+  // Generate the walls
   terrainSpawner(0, -200, 0.3, 430, 'leftwall');
   terrainSpawner(16, -200, 0.3, 430, 'rightwall');
   terrainSpawner(0, 14, 32, 2, 'floor');
   
+  // Generate the clouds
   terrainSpawner(6, 1, 9, 3, 'floor', 'pink', false, 'img/cloud2.png');
-  
   for(var i = 1; i < 100; i++){ 
     terrainSpawner(2,  -Math.abs(i*11), 6, 3, 'floor', 'pink', false, 'img/cloud1.png');
     terrainSpawner(8, -Math.abs(i*31), 9, 3, 'floor', 'pink', false, 'img/cloud2.png');
@@ -74,9 +75,36 @@ $(function(){
     spriteWidth: 32,
     spriteHeight: 32,
     spriteX: 0,
-    spriteY: 0
+    spriteY: 0,
   });
-
+  
+  player.kill = function( x, y ) {
+    var deadPlayer = world.createEntity({
+      name: 'deadPlayer',
+      type: 'static',
+      color: 'black',
+      x: this.position().x,
+      y: this.position().y,
+      width: 2,
+      height: 2,
+      imageStretchToFit: true,
+      fixedRotation: true,
+      friction: 12,
+      density: 1,
+      restitution: 0,
+      spriteSheet:true,
+      image: 'img/player.png',
+      spriteWidth: 32,
+      spriteHeight: 32,
+      spriteX: 0,
+      spriteY: 0,
+    })
+    
+    for(var i = 1; i < 5; i++){
+      deadPlayer.sprite(i, 2)
+    }
+    this.destroy();
+  }
   var force = 600;
 
   player.onKeydown(function( e ){
@@ -153,6 +181,7 @@ $(function(){
     }
   });
 
+  // Player sprites
   var frameCounter = 0;
   player.onRender(function(){
     frameCounter++;
@@ -175,7 +204,6 @@ $(function(){
     }
   });
 
-
   player.onStartContact(function( e ){
     this.contact = true;
     this.jumps = 0;
@@ -191,13 +219,22 @@ $(function(){
     }
   });
 
+  var lastPos = 0;
   world.onRender(function(ctx) {
     var p = player.position();
     var c = this.camera();
     if( p.y < 0.4 ) {
-      this.camera({x: 0, y: p.y - 7 });
+      if( p.y < lastPos) {
+        this.camera({x: 0, y: p.y - 7 });
+      }
     }
+    lastPos = p.y;
     
+    // kill the player if they fall off the screen
+    if(world.canvasPositionAt(player.position().x, player.position().y).y > 610) {
+      player.kill();
+    }
   });
+  window.world = world;
   window.player = player;
 });
