@@ -153,10 +153,18 @@ $(function(){
       player.killed = true;
     };
 
-    var force = 800;
+    var force = 400;
 
     player.onKeydown(function( e ){
-    
+      // Jump
+      if( this.contact && this.jumps < 2 ) {
+        if (e.keyCode === 96 || 38) {
+          this.jumps++;
+          this.applyImpulse( 50 );
+          inputState.up = true;
+        }
+      }
+
       // Right
       if (e.keyCode === 39) {
         this.setForce('movement', force, 90);
@@ -169,16 +177,6 @@ $(function(){
         this.setForce('movement', force, 270);
         inputState.left = true;
         player.lastDirection = 'left';
-      }
-      
-      // Jump
-      if( this.contact && this.jumps < 2 ) {
-
-        if (e.keyCode === 96 || 38) {
-          this.jumps++;
-          this.applyImpulse( 100 );
-          inputState.up = true;
-        }
       }
     });
 
