@@ -64,7 +64,7 @@ $(function(){
       y: 7,
       width: 1.1,
       height: 2.6,
-      imageOffsetX: -.8,
+      imageOffsetX: -0.8,
       imageOffsetY: -1.2,
       image: 'img/player.png',
       spriteSheet:true,
@@ -86,8 +86,8 @@ $(function(){
         y: this.position().y,
         width: 2.6,
         height: 1.1,
-        imageOffsetX: -.8,
-        imageOffsetY: -.8,
+        imageOffsetX: -0.8,
+        imageOffsetY: -0.8,
         fixedRotation: true,
         friction: 12,
         density: 1,
@@ -107,20 +107,13 @@ $(function(){
       var coords = {
         x: this.position().x,
         y: this.position().y
-      }
+      };
 
       var entity = new Kinvey.Entity({
           coords: coords
       }, 'dead-bodies');
     
-      entity.save({
-        success: function(response) {
-          console.log(response)
-        },
-        error: function(error) {
-          console.log(error)
-        }
-      });
+      entity.save();
 
       player.killed = true;
     };
@@ -161,12 +154,12 @@ $(function(){
           density: 0.5,
           x: player.position().x,
           y: player.position().y,
-          width: .1,
-          height: .1,
+          width: 0.1,
+          height: 0.1,
           color: 'black'
         });
         
-        bullet.applyImpulse( 50 )
+        bullet.applyImpulse( 50 );
         
         bullet.onImpact( function( entity, normalForce, tangentialForce ){
 
@@ -175,7 +168,7 @@ $(function(){
             entity.destroy();
             this.destroy();
 
-            entity._kinveyEntity.destroy()
+            entity._kinveyEntity.destroy();
 
           }
         });
@@ -292,12 +285,11 @@ $(function(){
     var lastPos = 0;
     window.world = world;
     window.player = player;
-  }
+  };
 
   var collection = new Kinvey.Collection('dead-bodies');
   collection.fetch({
     success: function(list) {
-      console.log(list)
       for (var i in list ){
         var deadPlayer = world.createEntity({
           name: 'dead-player-' + i,
@@ -306,8 +298,8 @@ $(function(){
           y:  list[i].attr.coords.y,
           width: 2.4,
           height: 1,
-          imageOffsetX: -.7,
-          imageOffsetY: -.8,
+          imageOffsetX: -0.7,
+          imageOffsetY: -0.8,
           restitution: 0,
           spriteSheet:true,
           image: 'img/player.png',
@@ -318,9 +310,6 @@ $(function(){
         deadPlayer.sprite(4, 2);
       }
       kickoff();
-    },
-    error: function(error) {
-      console.log(error)
     }
   });
 });
