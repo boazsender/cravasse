@@ -40,34 +40,6 @@ $(function(){
     });
   };
 
-  var collection = new Kinvey.Collection('dead-bodies');
-  collection.fetch({
-    success: function(list) {
-      for (var i in list ){
-        var deadPlayer = world.createEntity({
-          name: 'dead-player-' + i,
-          type: 'static',
-          x: list[i].attr.coords.x,
-          y:  list[i].attr.coords.y,
-          width: 2.4,
-          height: 1,
-          imageOffsetX: -.7,
-          imageOffsetY: -.8,
-          restitution: 0,
-          spriteSheet:true,
-          image: 'img/player.png',
-          spriteWidth: 96,
-          spriteHeight: 96
-        });
-        deadPlayer.sprite(4, 2)
-      }
-      kickoff();
-    },
-    error: function(error) {
-      console.log(error)
-    }
-  });
-  
   var kickoff = function(){
     // Generate the walls
     terrainSpawner(0, -200, 0.3, 430, 'leftwall');
@@ -89,7 +61,7 @@ $(function(){
       type: 'dynamic',
       color: 'black',
       x: 5,
-      y: 0,
+      y: 7,
       width: 1.1,
       height: 2.6,
       imageOffsetX: -.8,
@@ -160,7 +132,7 @@ $(function(){
       if( this.contact && this.jumps < 2 ) {
         if (e.keyCode === 96 || 38) {
           this.jumps++;
-          this.applyImpulse( 50 );
+          this.applyImpulse( 80 );
           inputState.up = true;
         }
       }
@@ -234,10 +206,13 @@ $(function(){
       
       var playerPos = player.position();
       var playerLastPos = player.lastPos;
-
+        
+      var playerDistFromBottom = Math.abs( world.camera().y - player.position().y );
+      window.dist = playerDistFromBottom;
+      
       if( playerPos.y < 0.4 ) {
-        if( playerPos.y < playerLastPos.y ) {
-          world.camera({x: 0, y: playerPos.y - 7 });
+        if( playerPos.y < playerLastPos.y && playerDistFromBottom < 10) {
+          world.camera({x: 0, y: playerPos.y - (playerDistFromBottom) });
         }
       }
 
@@ -287,4 +262,32 @@ $(function(){
     window.world = world;
     window.player = player;
   }
+
+  var collection = new Kinvey.Collection('dead-bodies');
+  collection.fetch({
+    success: function(list) {
+      for (var i in list ){
+        var deadPlayer = world.createEntity({
+          name: 'dead-player-' + i,
+          type: 'static',
+          x: list[i].attr.coords.x,
+          y:  list[i].attr.coords.y,
+          width: 2.4,
+          height: 1,
+          imageOffsetX: -.7,
+          imageOffsetY: -.8,
+          restitution: 0,
+          spriteSheet:true,
+          image: 'img/player.png',
+          spriteWidth: 96,
+          spriteHeight: 96
+        });
+        deadPlayer.sprite(4, 2)
+      }
+      kickoff();
+    },
+    error: function(error) {
+      console.log(error)
+    }
+  });
 });
