@@ -119,7 +119,7 @@ $(function(){
       player.killed = true;
     };
 
-    var force = 500;
+    var force = 300;
     player.lastShot = Date.now();
 
     player.onKeydown(function( e ){
@@ -164,8 +164,13 @@ $(function(){
           });
 
           bullet.applyImpulse( 50 );
-
-          bullet.onImpact( function( entity, normalForce, tangentialForce ){
+          window.bul = bullet;
+          bullet.onRender(function(){
+            if ( this.position().y < (world.camera().y - 10) ) {
+              this.destroy()
+            }
+          })
+          bullet.onImpact(function( entity, normalForce, tangentialForce ){
             if( entity.name().indexOf("dead-player") === 0 ){
               entity.destroy();
               this.destroy();
