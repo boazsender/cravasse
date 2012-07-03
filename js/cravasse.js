@@ -117,7 +117,7 @@ $(function(){
       entity.save();
 
       player.killed = true;
-      $('.score').html('You died after jumping ' + player.highest + ' meters into the air. It\'s ok though, because future players will be able to use your body to get highter.');
+      $('.score').html('You died after jumping ' + player.highest + ' meters into the air.<br>It\'s ok though, because future players will be able to use your body<br>to get higher.');
     };
 
     var force = 300;
