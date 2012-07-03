@@ -12,7 +12,7 @@ $(function(){
   
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
-    collisionOutlines: true,
+    // collisionOutlines: true,
     gravity: 60,
     scale: 30
   });
