@@ -164,7 +164,7 @@ $(function(){
           });
 
           bullet.applyImpulse( 50 );
-          window.bul = bullet;
+
           bullet.onRender(function(){
             if ( this.position().y < (world.camera().y - 10) ) {
               this.destroy()
@@ -236,7 +236,7 @@ $(function(){
       var playerPos = player.position();
       var playerLastPos = player.lastPos;
         
-      var playerDistFromBottom = Math.abs( world.camera().y - player.position().y );
+      var playerDistFromBottom = Math.abs( world.camera().y - player.position().y ) +1;
       window.dist = playerDistFromBottom;
       
       if( playerPos.y < 0.4 ) {
