@@ -117,6 +117,7 @@ $(function(){
       entity.save();
 
       player.killed = true;
+      $('.score').html('You died after jumping ' + player.highest + ' meters into the air.');
     };
 
     var force = 300;
@@ -231,7 +232,14 @@ $(function(){
     // Player sprites
     var frameCounter = 0;
     player.lastPos = {};
+    player.highest = 0;
     player.onRender(function(){
+      var absFloPos = Math.floor(Math.abs(player.position().y));
+      if( absFloPos > player.highest){
+        player.highest = absFloPos;
+      }
+      
+      $('.meters').html( player.highest )
       
       var playerPos = player.position();
       var playerLastPos = player.lastPos;
