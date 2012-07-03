@@ -12,7 +12,7 @@ $(function(){
   
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
-    // collisionOutlines: true,
+    collisionOutlines: true,
     gravity: 60,
     scale: 30
   });
@@ -85,10 +85,10 @@ $(function(){
         color: 'black',
         x: this.position().x,
         y: this.position().y,
-        width: 2.6,
-        height: 1.1,
+        width: 2,
+        height: 0.7,
         imageOffsetX: -0.8,
-        imageOffsetY: -0.8,
+        imageOffsetY: -0.7,
         fixedRotation: true,
         friction: 12,
         density: 1,
@@ -303,10 +303,10 @@ $(function(){
           type: 'static',
           x: list[i].attr.coords.x,
           y:  list[i].attr.coords.y,
-          width: 2.4,
-          height: 1,
-          imageOffsetX: -0.7,
-          imageOffsetY: -0.8,
+          width: 2,
+          height: 0.7,
+          imageOffsetX: -0.8,
+          imageOffsetY: -0.7,
           restitution: 0,
           spriteSheet:true,
           image: 'img/player.png',
