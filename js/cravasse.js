@@ -12,7 +12,7 @@ $(function(){
   
   var canvasElem = document.getElementById("world");
   var world = boxbox.createWorld(canvasElem, {
-    collisionOutlines: true,
+    // collisionOutlines: true,
     gravity: 60,
     scale: 30
   });
@@ -158,6 +158,7 @@ $(function(){
             restitution: 0,
             density: 0.5,
             x: player.position().x,
+            image: 'img/bullet.png',
             y: player.position().y,
             width: 0.1,
             height: 0.1,
