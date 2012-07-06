@@ -149,7 +149,7 @@ $(function(){
       
       // Shoot
       if (e.keyCode === 32) {
-        if( (player.lastShot + 1000) < Date.now() ){
+        if( (player.lastShot + 500) < Date.now() ){
           player.lastShot = Date.now();
           var bullet = world.createEntity({
             name: 'bullet',
@@ -271,7 +271,8 @@ $(function(){
     window.world = world;
     window.player = player;
   };
-
+  
+  // Load up the dead bodies, and kick off the game.
   var collection = new Kinvey.Collection('dead-bodies');
   collection.fetch({
     success: function(list) {
